@@ -35,8 +35,8 @@ def run_bash(command: str) -> str:
         return "Error: Dangerous command blocked"
     try:
         r = subprocess.run(command, shell=True, cwd=os.getcwd(),
-            capture_output=True, text=True, timeout=120)
-        out = (r.stdout + r.stderr).strip()
+            capture_output=True, text=True, timeout=120, encoding="utf-8", errors="replace")
+        out = ((r.stdout or "") + (r.stderr or "")).strip()
         return out[:50000] if out else "(no output)"
     except subprocess.TimeoutExpired:
         return "Error: Timeout (120s)"
@@ -56,11 +56,14 @@ def agent_loop(messages: list):
 
         # 模型没有调用工具，结束循环
         if response.choices[0].finish_reason != "tool_calls":
+            # print(f"最后响应：msg，结束循环：{response.choices[0]}")
+            # print()
             return
 
         # 执行每个工具调用，把结果塞回 messages
         for tool_call in msg.tool_calls:
             print(f"一次性调用工具数量：{len(msg.tool_calls)}")
+            print(f'tool_call: {tool_call}')
             command = json.loads(tool_call.function.arguments)["command"]
             print(f"\033[33m$ {command}\033[0m")
             output = run_bash(command)

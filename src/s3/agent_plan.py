@@ -74,7 +74,7 @@ def _safe_path(relative_path: str) -> Path:
     # 逃逸情况举例：p = "../../etc/passwd"
     path = (Path.cwd() / relative_path).resolve()
     if not Path.relative_to(path, Path.cwd()):
-        raise ValueError(f"Path escapes workspace: {p}")
+        raise ValueError(f"Path escapes workspace: {relative_path}")
     return path
 
 def run_bash(command: str) -> str:

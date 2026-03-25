@@ -35,8 +35,8 @@ def run_bash(command: str) -> str:
         return "Error: Dangerous command blocked"
     try:
         r = subprocess.run(command, shell=True, cwd=os.getcwd(),
-            capture_output=True, text=True, timeout=120)
-        out = (r.stdout + r.stderr).strip()
+            capture_output=True, text=True, timeout=120, encoding="utf-8", errors="replace")
+        out = ((r.stdout or "") + (r.stderr or "")).strip()
         return out[:50000] if out else "(no output)"
     except subprocess.TimeoutExpired:
         return "Error: Timeout (120s)"
