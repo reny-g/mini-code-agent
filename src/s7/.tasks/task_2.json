@@ -1,0 +1,11 @@
+{
+  "id": 2,
+  "subject": "Write code",
+  "description": "Implement the core functionality.",
+  "status": "pending",
+  "blockedBy": [
+    1
+  ],
+  "blocks": [],
+  "owner": ""
+}
