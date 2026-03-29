@@ -1,5 +1,5 @@
 """
-相对s1添加了更多的工具，并且稍微规范了工具的执行：使用字典分发，并且在路径沙箱内执行
+通过load_skill工具加载skill到上下文
 """
 from openai import OpenAI
 import os

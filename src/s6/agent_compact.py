@@ -1,5 +1,5 @@
 """
-相对s1添加了更多的工具，并且稍微规范了工具的执行：使用字典分发，并且在路径沙箱内执行
+两层压缩：第一层为每轮都进行工具压缩。第二层为上下文压缩，达到固定阈值时触发
 """
 from openai import OpenAI
 import os
@@ -275,6 +275,7 @@ def agent_loop(messages: list):
             # compact 工具单独执行
             if function_name == "compact":
                 output = "messages compressing"
+                manual_compact = True
             else:
                 try:
                     output = handler(**arguments) if handler else f"unknow tool: {function_name}"
